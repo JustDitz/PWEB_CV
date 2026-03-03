@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Muhammad Aditya Nugraha — Portfolio CV</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #080f1a; 
+      --paper:    #0f172a; 
+      --border:   #1e293b; 
+      --accent:   #0ea5e9; 
+      --accent2:  #38bdf8; 
+      --text:     #f1f5f9; 
+      --muted:    #94a3b8; 
+      --card:     #1e293b;
+      --card-h:   #334155;
+      --shadow:   0 8px 40px rgba(0,0,0,0.6), 0 2px 8px rgba(0,0,0,0.4);
+      --glow:     0 0 30px rgba(14, 165, 233, 0.2); 
+      --radius:   12px;
+      --ff-display: 'DM Sans', sans-serif; 
+      --ff-body:    'DM Sans', sans-serif;
+      --ff-mono:    'DM Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--ff-body);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 16px;
+      /* subtle noise bg */
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    }
+
+    /* ===== LANGUAGE TOGGLE ===== */
+    #lang-toggle { display: none; }
+
+    .lang-bar {
+      width: 100%;
+      max-width: 860px;
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 16px;
+    }
+    .lang-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+      font-family: var(--ff-mono);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+    .toggle-track {
+      width: 48px; height: 24px;
+      background: var(--border);
+      border-radius: 12px;
+      position: relative;
+      transition: background 0.3s;
+    }
+    .toggle-thumb {
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 18px; height: 18px;
+      background: var(--accent);
+      border-radius: 50%;
+      transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+    }
+    #lang-toggle:checked ~ .lang-bar .toggle-track { background: rgba(201,168,76,0.25); }
+    #lang-toggle:checked ~ .lang-bar .toggle-thumb { transform: translateX(24px); }
+    #lang-toggle:checked ~ .lang-bar .lbl-id { color: var(--muted); }
+    #lang-toggle:checked ~ .lang-bar .lbl-en { color: var(--accent); }
+    .lbl-id { color: var(--accent); }
+    .lbl-en { transition: color 0.3s; }
+
+    /* ===== LANGUAGE CONTENT TOGGLE ===== */
+    .id-text, .en-text { transition: opacity 0.3s; }
+    .en-text { display: none; }
+    #lang-toggle:checked ~ .cv-wrapper .en-text { display: unset; }
+    #lang-toggle:checked ~ .cv-wrapper .id-text { display: none; }
+    /* block-level bilingual */
+    .en-block { display: none; }
+    .id-block { display: block; }
+    #lang-toggle:checked ~ .cv-wrapper .en-block { display: block; }
+    #lang-toggle:checked ~ .cv-wrapper .id-block { display: none; }
+    /* inline-block bilingual (for edu-grade) */
+    .edu-grade.en-block { display: none; }
+    .edu-grade.id-block { display: inline-block; }
+    #lang-toggle:checked ~ .cv-wrapper .edu-grade.en-block { display: inline-block; }
+    #lang-toggle:checked ~ .cv-wrapper .edu-grade.id-block { display: none; }
+
+    /* ===== CV WRAPPER ===== */
+    .cv-wrapper {
+      width: 100%;
+      max-width: 860px;
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow), var(--glow);
+      overflow: hidden;
+      animation: fadeUp 0.9s cubic-bezier(.4,0,.2,1) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== HEADER ===== */
+    .cv-header {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 32px;
+      padding: 48px 48px 36px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .cv-header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Photo */
+    .photo-wrap {
+      width: 110px; height: 110px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #7a5c1e, var(--accent2));
+      padding: 3px;
+      animation: float 5s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-6px); }
+    }
+    .photo-inner {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      background: var(--card);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .photo-inner img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: 50% 5%;
+      transform: scale(1.4);
+    }
+    .photo-placeholder {
+      font-size: 38px;
+      color: var(--muted);
+    }
+
+    .header-info { display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+
+    h1 {
+      font-family: var(--ff-display);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+      color: var(--text);
+    }
+    h1 span { color: var(--accent); font-weight: 600; }
+
+    .tagline {
+      font-family: var(--ff-mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.85;
+    }
+
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 16px;
+      margin-top: 4px;
+    }
+    .contact-row a {
+      font-family: var(--ff-mono);
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 5px;
+      transition: color 0.25s;
+      position: relative;
+    }
+    .contact-row a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      height: 1px;
+      width: 0;
+      background: var(--accent);
+      transition: width 0.3s cubic-bezier(.4,0,.2,1);
+    }
+    .contact-row a:hover { color: var(--accent); }
+    .contact-row a:hover::after { width: 100%; }
+
+    .icon { font-size: 11px; opacity: 0.7; }
+
+    /* Download Button */
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      padding: 9px 22px;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-family: var(--ff-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s, transform 0.2s, box-shadow 0.3s;
+      width: fit-content;
+    }
+    .btn-download:hover {
+      background: var(--accent);
+      color: #0e0e10;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(201,168,76,0.25);
+    }
+
+    /* ===== BODY LAYOUT ===== */
+    .cv-body {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+    }
+
+    .cv-main { padding: 40px 40px 40px 48px; border-right: 1px solid var(--border); }
+    .cv-side { padding: 40px 32px; }
+
+    /* ===== SECTION ===== */
+    .section { margin-bottom: 40px; }
+    .section:last-child { margin-bottom: 0; }
+
+    .section-title {
+      font-family: var(--ff-display);
+      font-size: 1.4rem;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: var(--text);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--accent), transparent);
+      opacity: 0.4;
+    }
+    .section-title .s-num {
+      font-family: var(--ff-mono);
+      font-size: 10px;
+      color: var(--accent);
+      opacity: 0.7;
+      letter-spacing: 0.1em;
+    }
+
+    /* ===== EXPERIENCE ITEM ===== */
+    .exp-item {
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      animation: fadeUp 0.7s cubic-bezier(.4,0,.2,1) both;
+    }
+    .exp-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+    .exp-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 4px; flex-wrap: wrap; }
+    .exp-org { font-weight: 500; font-size: 14px; color: var(--text); }
+    .exp-period {
+      font-family: var(--ff-mono);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+    .exp-role {
+      font-style: italic;
+      font-size: 12px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      font-family: var(--ff-display);
+      letter-spacing: 0.04em;
+    }
+    .exp-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .exp-bullets {
+      margin-top: 8px;
+      padding-left: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .exp-bullets li {
+      font-size: 12.5px;
+      color: var(--muted);
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.55;
+    }
+    .exp-bullets li::before {
+      content: '▸';
+      position: absolute; left: 0;
+      color: var(--accent);
+      font-size: 10px;
+      top: 2px;
+    }
+
+    /* ===== PROJECT CARDS ===== */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+    }
+    .proj-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      cursor: default;
+      transition: transform 0.3s cubic-bezier(.4,0,.2,1), background 0.3s, border-color 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .proj-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(to right, var(--accent), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    .proj-card:hover {
+      transform: translateY(-4px);
+      background: var(--card-h);
+      border-color: rgba(201,168,76,0.3);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.4), 0 0 20px rgba(201,168,76,0.06);
+    }
+    .proj-card:hover::before { transform: scaleX(1); }
+
+    .proj-tag {
+      font-family: var(--ff-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      opacity: 0.8;
+      margin-bottom: 8px;
+    }
+    .proj-title {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .proj-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .proj-period {
+      font-family: var(--ff-mono);
+      font-size: 10px;
+      color : white;
+      margin-top: 10px;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .side-section { margin-bottom: 32px; }
+    .side-title {
+      font-family: var(--ff-mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+      opacity: 0.9;
+    }
+
+    /* Education */
+    .edu-item { margin-bottom: 18px; }
+    .edu-name { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+    .edu-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .edu-grade {
+      display: inline-block;
+      margin-top: 4px;
+      font-family: var(--ff-mono);
+      font-size: 11px;
+      color: var(--accent);
+      background: rgba(201,168,76,0.08);
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+    .edu-period { font-family: var(--ff-mono); font-size: 10px; color: var(--muted); margin-top: 3px; }
+    .edu-note { font-size: 11.5px; color: var(--muted); margin-top: 6px; padding-left: 10px; border-left: 2px solid var(--border); line-height: 1.5; }
+
+    /* Skills */
+    .skill-list { display: flex; flex-wrap: wrap; gap: 7px; }
+    .skill-chip {
+      font-family: var(--ff-mono);
+      font-size: 10.5px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      transition: border-color 0.25s, color 0.25s, background 0.25s;
+    }
+    .skill-chip:hover { border-color: var(--accent); color: var(--accent); background: rgba(201,168,76,0.05); }
+
+    /* Personal traits */
+    .trait-row { display: flex; flex-direction: column; gap: 8px; }
+    .trait {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+    .trait-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    /* Divider */
+    .divider { width: 100%; height: 1px; background: var(--border); margin: 20px 0; }
+
+    /* ===== FOOTER ===== */
+    .cv-footer {
+      padding: 16px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-note {
+      font-family: var(--ff-mono);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      opacity: 0.5;
+    }
+
+    /* Stagger animations */
+    .exp-item:nth-child(1) { animation-delay: 0.1s; }
+    .exp-item:nth-child(2) { animation-delay: 0.2s; }
+    .exp-item:nth-child(3) { animation-delay: 0.3s; }
+    .exp-item:nth-child(4) { animation-delay: 0.4s; }
+    .exp-item:nth-child(5) { animation-delay: 0.5s; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 680px) {
+      .cv-header { grid-template-columns: 1fr; gap: 20px; padding: 32px 24px 28px; }
+      .cv-body { grid-template-columns: 1fr; }
+      .cv-main { padding: 28px 24px; border-right: none; border-bottom: 1px solid var(--border); }
+      .cv-side { padding: 28px 24px; }
+      .cv-footer { padding: 16px 24px; flex-direction: column; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hidden language toggle checkbox -->
+  <input type="checkbox" id="lang-toggle"/>
+
+  <!-- Language Bar -->
+  <div class="lang-bar">
+    <label class="lang-label" for="lang-toggle">
+      <span class="lbl-id">ID</span>
+      <span class="toggle-track"><span class="toggle-thumb"></span></span>
+      <span class="lbl-en">EN</span>
+    </label>
+  </div>
+
+  <!-- CV WRAPPER -->
+  <div class="cv-wrapper">
+
+    <!-- HEADER -->
+    <header class="cv-header">
+      <div class="photo-wrap">
+        <div class="photo-inner">
+          <!-- Replace 'your-photo.jpg' with your actual photo path -->
+          <img src="cv_img.JPG" alt="Muhammad Aditya Nugraha"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+               style="display:block"/>
+          <div class="photo-placeholder" style="display:none">👤</div>
+        </div>
+      </div>
+
+      <div class="header-info">
+        <div class="tagline">
+          <span class="id-text">Rekayasa Kecerdasan Buatan — ITS Surabaya</span>
+          <span class="en-text">Artificial Intelligence Engineering — ITS Surabaya</span>
+        </div>
+        <h1>Muhammad <span>Aditya</span> Nugraha</h1>
+
+        <div class="contact-row">
+          <a href="tel:+6285248080071">
+            <span class="icon">📱</span> +62 852-4808-0071
+          </a>
+          <a href="mailto:m.aditya.nug107@gmail.com">
+            <span class="icon">✉</span> m.aditya.nug107@gmail.com
+          </a>
+          <a href="https://wa.me/6285248080071" target="_blank">
+            <span class="icon">💬</span> WhatsApp
+          </a>
+          <a href="https://www.linkedin.com/in/muhammad-adityanugraha-9778a4209/" target="_blank">
+            <span class="icon">🔗</span> LinkedIn
+          </a>
+          <a href="https://github.com/JustDitz" target="_blank">
+            <span class="icon">⌥</span> GitHub
+          </a>
+        </div>
+
+        <a class="btn-download" href="Muhammad_Aditya_Nugraha_CV.pdf" download="Muhammad_Aditya_Nugraha_CV.pdf">
+          ↓ <span class="id-text">Unduh CV</span><span class="en-text">Download CV</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- BODY -->
+    <div class="cv-body">
+
+      <!-- MAIN COLUMN -->
+      <main class="cv-main">
+
+        <!-- About -->
+        <section class="section">
+          <h2 class="section-title"><span class="s-num">01</span>
+            <span class="id-text">Tentang Saya</span>
+            <span class="en-text">About Me</span>
+          </h2>
+          <p class="id-block" style="font-size:13.5px; color:var(--muted); line-height:1.75;">
+            Mahasiswa Rekayasa Kecerdasan Buatan di Institut Teknologi Sepuluh Nopember (ITS) dengan minat mendalam di bidang teknologi dan komunikasi. Selain kemampuan pemrograman dan pemecahan masalah, aktif mengembangkan keterampilan interpersonal seperti public speaking, kerja tim, dan kepemimpinan melalui berbagai organisasi dan kegiatan edukasi.
+          </p>
+          <p class="en-block" style="font-size:13.5px; color:var(--muted); line-height:1.75;">
+            Artificial Intelligence Engineering student at Institut Teknologi Sepuluh Nopember (ITS) with a deep interest in technology and communication. Beyond programming and problem-solving skills, actively developing interpersonal competencies including public speaking, teamwork, and leadership through various organizational and educational activities.
+          </p>
+        </section>
+
+        <!-- Organisational Experience -->
+        <section class="section">
+          <h2 class="section-title"><span class="s-num">02</span>
+            <span class="id-text">Pengalaman Organisasi</span>
+            <span class="en-text">Organisational Experience</span>
+          </h2>
+
+          <!-- Item 1 -->
+          <div class="exp-item">
+            <div class="exp-header">
+              <span class="exp-org">Ini Lho ITS! 2026 × Forda</span>
+              <span class="exp-period">Oct 2025 – Feb 2026</span>
+            </div>
+            <div class="exp-role">
+              <span class="id-text">Wakil Ketua Forda</span>
+              <span class="en-text">Vice Chairman of Forda</span>
+            </div>
+            <ul class="exp-bullets">
+              <li class="id-text">Mendampingi Ketua Pelaksana dalam memimpin 56 panitia dan staf ahli lintas divisi.</li>
+              <li class="id-text">Mengawasi proses perencanaan, penganggaran, dan pelaksanaan teknis acara.</li>
+              <li class="id-text">Mengelola komunikasi internal, distribusi tugas, serta evaluasi kinerja antar panitia.</li>
+              <li class="en-text">Assisted the Executive Chair in leading 56 committees and expert staff across divisions.</li>
+              <li class="en-text">Oversaw event planning, budgeting, and technical execution processes.</li>
+              <li class="en-text">Managed internal communication, task distribution, and inter-committee performance evaluation.</li>
+            </ul>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="exp-item">
+            <div class="exp-header">
+              <span class="exp-org">INCLENATION 2025</span>
+              <span class="exp-period">Jul – Aug 2025</span>
+            </div>
+            <div class="exp-role">Staff Mentor</div>
+            <ul class="exp-bullets">
+              <li class="id-text">Membimbing 11 mahasiswa baru FTEIC ITS selama masa orientasi kampus.</li>
+              <li class="id-text">Menyampaikan materi dan memfasilitasi diskusi kelompok secara interaktif.</li>
+              <li class="id-text">Memantau keaktifan peserta dan menjaga komunikasi yang suportif.</li>
+              <li class="en-text">Mentored 11 new FTEIC ITS students during campus orientation.</li>
+              <li class="en-text">Delivered materials and facilitated interactive group discussions.</li>
+              <li class="en-text">Monitored participant engagement and maintained supportive communication.</li>
+            </ul>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="exp-item">
+            <div class="exp-header">
+              <span class="exp-org">ITS Camp 2025</span>
+              <span class="exp-period">Jul – Aug 2025</span>
+            </div>
+            <div class="exp-role">Staff Mentor</div>
+            <ul class="exp-bullets">
+              <li class="id-text">Membimbing 20 mahasiswa baru Teknik Informatika ITS selama masa orientasi kampus.</li>
+              <li class="id-text">Memfasilitasi diskusi kelompok secara interaktif.</li>
+              <li class="id-text">Menilai dan memantau seluruh kegiatan kelompok mahasiswa baru.</li>
+              <li class="en-text">Guided 20 new Computer Engineering ITS students during campus orientation.</li>
+              <li class="en-text">Facilitated interactive group discussions.</li>
+              <li class="en-text">Assessed and monitored all group activities of new students.</li>
+            </ul>
+          </div>
+
+          <!-- Item 4 -->
+          <div class="exp-item">
+            <div class="exp-header">
+              <span class="exp-org">Schematics 2025 — NPC Division</span>
+              <span class="exp-period">Mar 2025 – Present</span>
+            </div>
+            <div class="exp-role">
+              <span class="id-text">Staff NPC</span>
+              <span class="en-text">NPC Staff</span>
+            </div>
+            <ul class="exp-bullets">
+              <li class="id-text">Berkontribusi dalam penyusunan soal kompetisi Competitive Programming skala nasional.</li>
+              <li class="id-text">Melakukan brainstorming dan review teknis untuk memastikan kualitas dan keseimbangan tingkat kesulitan soal.</li>
+              <li class="id-text">Menyusun test case dan memastikan setiap soal memiliki solusi valid dan efisien.</li>
+              <li class="en-text">Contributed to problem-setting for a national-scale Competitive Programming contest.</li>
+              <li class="en-text">Conducted brainstorming and technical reviews to ensure quality and balanced difficulty levels.</li>
+              <li class="en-text">Compiled test cases and verified each problem had valid, efficient solutions.</li>
+            </ul>
+          </div>
+
+          <!-- Item 5 -->
+          <div class="exp-item">
+            <div class="exp-header">
+              <span class="exp-org">Makrab Prodi RKA</span>
+              <span class="exp-period">Apr – May 2025</span>
+            </div>
+            <div class="exp-role">Project Officer</div>
+            <ul class="exp-bullets">
+              <li class="id-text">Memimpin 26 panitia dalam 6 divisi untuk menyelenggarakan acara dengan 62 peserta dan panitia.</li>
+              <li class="id-text">Meningkatkan efektivitas komunikasi internal — 100% kehadiran dan partisipasi aktif seluruh panitia.</li>
+              <li class="id-text">Menyusun dan menjalankan timeline kegiatan secara tepat waktu melalui koordinasi mingguan.</li>
+              <li class="en-text">Led 26 committee members across 6 divisions for an event with 62 total participants and staff.</li>
+              <li class="en-text">Improved internal communication effectiveness — achieved 100% attendance and active participation.</li>
+              <li class="en-text">Compiled and executed activity timeline on schedule through weekly cross-division coordination.</li>
+            </ul>
+          </div>
+
+          <!-- Item 6 -->
+          <div class="exp-item">
+            <div class="exp-header">
+              <span class="exp-org">Ini Lho ITS! 2025 × Forda</span>
+              <span class="exp-period">Dec 2024 – Jan 2025</span>
+            </div>
+            <div class="exp-role">
+              <span class="id-text">Staff Public Relation</span>
+              <span class="en-text">Public Relations Staff</span>
+            </div>
+            <ul class="exp-bullets">
+              <li class="id-text">Menjadi pembicara pengenalan ITS kepada lebih dari 1500 siswa dari 10 sekolah.</li>
+              <li class="id-text">Menjadi moderator/pembicara dalam sesi pengenalan program studi, fasilitas kampus, dan kehidupan mahasiswa.</li>
+              <li class="id-text">Melakukan mentoring internal dan pencerdasan kepada 40 anggota tim.</li>
+              <li class="en-text">Presented ITS introduction to over 1,500 students from 10 schools.</li>
+              <li class="en-text">Served as moderator/speaker in sessions on study programs, campus facilities, and student life.</li>
+              <li class="en-text">Conducted internal mentoring and knowledge-sharing for 40 team members.</li>
+            </ul>
+          </div>
+
+          <!-- Item 7 -->
+          <div class="exp-item">
+            <div class="exp-header">
+              <span class="exp-org">SSC Club — Samarinda</span>
+              <span class="exp-period">Nov 2022 – Nov 2023</span>
+            </div>
+            <div class="exp-role">
+              <span class="id-text">Kepala Divisi Sadasi</span>
+              <span class="en-text">Head of Sadasi Division</span>
+            </div>
+            <ul class="exp-bullets">
+              <li class="id-text">Menyusun dan menyampaikan materi edukasi sains secara interaktif untuk siswa SMA.</li>
+              <li class="id-text">Mengarahkan tim dalam menyiapkan konten edukasi serta mendokumentasikan hasil kegiatan.</li>
+              <li class="id-text">Berhasil meningkatkan engagement program hingga 2400 views.</li>
+              <li class="en-text">Designed and delivered interactive science education materials for high school students.</li>
+              <li class="en-text">Directed the team in preparing educational content and documenting activity outcomes.</li>
+              <li class="en-text">Successfully grew program engagement to 2,400 views.</li>
+            </ul>
+          </div>
+
+          <!-- Item 8 -->
+          <div class="exp-item">
+            <div class="exp-header">
+              <span class="exp-org">Celestialis 25</span>
+              <span class="exp-period">Oct 2022 – Feb 2023</span>
+            </div>
+            <div class="exp-role">
+              <span class="id-text">Kepala Sub Divisi Kimia</span>
+              <span class="en-text">Head of Chemistry Sub-Division</span>
+            </div>
+            <ul class="exp-bullets">
+              <li class="id-text">Sukses menghadirkan 75 peserta tingkat SMP/MTS se-Samarinda.</li>
+              <li class="id-text">Mengelola tim kecil 4 orang dalam pengembangan soal, teknis penilaian, dan briefing juri.</li>
+              <li class="id-text">Bertanggung jawab dalam menyusun konsep teknis perlombaan sains bidang Kimia.</li>
+              <li class="en-text">Successfully attracted 75 junior high-level participants from across Samarinda.</li>
+              <li class="en-text">Managed a team of 4 for problem-setting, scoring mechanics, and judge briefing.</li>
+              <li class="en-text">Responsible for designing technical concepts for the Chemistry science competition.</li>
+            </ul>
+          </div>
+
+        </section>
+
+        <!-- Projects / Highlights -->
+        <section class="section">
+          <h2 class="section-title"><span class="s-num">03</span>
+            <span class="id-text">Proyek</span>
+            <span class="en-text">Projects</span>
+          </h2>
+          <div class="projects-grid">
+
+            <div class="proj-card">
+              <div class="proj-tag">
+                <span class="id-text">Computer Vision & Web</span>
+                <span class="en-text">Computer Vision & Web</span>
+              </div>
+              <div class="proj-title">Smart Mirror Application</div>
+              <div class="proj-desc id-block">Pengembangan aplikasi smart mirror interaktif berbasis computer vision menggunakan arsitektur hybrid lokal dengan Python (Flask), pelacakan tangan MediaPipe, dan animasi frontend anime.js.</div>
+              <div class="proj-desc en-block">Developed an interactive computer vision based smart mirror utilizing a local hybrid architecture with Python (Flask), MediaPipe hand tracking, and anime.js frontend animations.</div>
+              <div class="proj-period">Jan 2026</div>
+            </div>
+
+            <div class="proj-card">
+              <div class="proj-tag">
+                <span class="id-text">Artificial Intelligence</span>
+                <span class="en-text">Artificial Intelligence</span>
+              </div>
+              <div class="proj-title">AI Enhanced Geothermal Mapping</div>
+              <div class="proj-desc id-block">Penelitian dan penyusunan proposal untuk pemetaan prospek panas bumi menggunakan pendekatan kecerdasan buatan.</div>
+              <div class="proj-desc en-block">Research and proposal development for geothermal prospect mapping utilizing artificial intelligence approaches.</div>
+              <div class="proj-period">Nov 2025</div>
+            </div>
+
+            <div class="proj-card">
+              <div class="proj-tag">
+                <span class="id-text">Simulation & Prediction</span>
+                <span class="en-text">Simulation & Prediction</span>
+              </div>
+              <div class="proj-title">HABs Mitigation Simulation</div>
+              <div class="proj-desc id-block">Membangun skenario simulasi dan prediksi untuk mitigasi Harmful Algal Blooms (HABs) menggunakan algoritma optimasi multi objektif (MOGWO/PSO).</div>
+              <div class="proj-desc en-block">Built simulation and prediction scenarios for Harmful Algal Blooms (HABs) mitigation using multi objective optimization algorithms (MOGWO/PSO).</div>
+              <div class="proj-period">Nov 2025</div>
+            </div>
+
+            <div class="proj-card">
+              <div class="proj-tag">
+                <span class="id-text">Game Development</span>
+                <span class="en-text">Game Development</span>
+              </div>
+              <div class="proj-title">Funo Card Game</div>
+              <div class="proj-desc id-block">Pengembangan konsep dan arsitektur gim kartu multipemain real time yang diadaptasi dari mekanisme permainan Uno.</div>
+              <div class="proj-desc en-block">Concept and architecture development for a real time multiplayer card game adapted from Uno mechanics.</div>
+              <div class="proj-period">Dec 2025</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title"><span class="s-num">04</span>
+            <span class="id-text">Pencapaian & Pengembangan</span>
+            <span class="en-text">Achievements & Developments</span>
+          </h2>
+          <div class="projects-grid">
+
+            <div class="proj-card">
+              <div class="proj-tag">
+                <span class="id-text">Kompetisi Sains</span>
+                <span class="en-text">Science Competition</span>
+              </div>
+              <div class="proj-title">OSN Informatika 2022</div>
+              <div class="proj-desc id-block">Meraih peringkat 2 tingkat Provinsi pada OSN Informatika tahun 2022.</div>
+              <div class="proj-desc en-block">Achieved 2nd place at the Provincial level in the National Science Olympiad (Informatics) 2022.</div>
+              <div class="proj-period">2022</div>
+            </div>
+
+            <div class="proj-card">
+              <div class="proj-tag">
+                <span class="id-text">Kompetisi Sains</span>
+                <span class="en-text">Science Competition</span>
+              </div>
+              <div class="proj-title">OSN Informatika 2023</div>
+              <div class="proj-desc id-block">Lolos seleksi ke OSN Informatika tingkat Provinsi tahun 2023.</div>
+              <div class="proj-desc en-block">Qualified for the Provincial level National Science Olympiad (Informatics) 2023.</div>
+              <div class="proj-period">2023</div>
+            </div>
+
+            <div class="proj-card">
+              <div class="proj-tag">
+                <span class="id-text">Pelatihan Kepemimpinan</span>
+                <span class="en-text">Leadership Training</span>
+              </div>
+              <div class="proj-title">LKMM Pra TD V FTEIC</div>
+              <div class="proj-desc id-block">Mengikuti pelatihan kepemimpinan dan manajemen mahasiswa tingkat dasar di FTEIC ITS.</div>
+              <div class="proj-desc en-block">Completed foundational student leadership and management training at FTEIC ITS.</div>
+              <div class="proj-period">ITS · 2024</div>
+            </div>
+
+          </div>
+        </section>
+
+      </main>
+
+      <!-- SIDEBAR COLUMN -->
+      <aside class="cv-side">
+
+        <!-- Education -->
+        <div class="side-section">
+          <div class="side-title">
+            <span class="id-text">Pendidikan</span>
+            <span class="en-text">Education</span>
+          </div>
+          <div class="edu-item">
+            <div class="edu-name">Institut Teknologi Sepuluh Nopember</div>
+            <div class="edu-sub id-block">S1 Rekayasa Kecerdasan Buatan</div>
+            <div class="edu-sub en-block">B.Sc. Artificial Intelligence Engineering</div>
+            <span class="edu-grade id-block">IPK 3.68 / 4.00</span>
+            <span class="edu-grade en-block">GPA 3.68 / 4.00</span>
+            <div class="edu-period">Jul 2024 – Sep 2028 (Expected)</div>
+          </div>
+          <div class="divider"></div>
+          <div class="edu-item">
+            <div class="edu-name">SMA Negeri 10 Samarinda</div>
+            <div class="edu-sub id-block">Sekolah Menengah Atas</div>
+            <div class="edu-sub en-block">Senior High School</div>
+            <span class="edu-grade">87.65 / 100</span>
+            <div class="edu-period">Jul 2021 – Jul 2024</div>
+            <div class="edu-note id-block">Peringkat 2 OSN Informatika Provinsi (2022)<br/>Lolos OSN Informatika Provinsi (2023)</div>
+            <div class="edu-note en-block">2nd place, Provincial OSN Informatics (2022)<br/>Qualified, Provincial OSN Informatics (2023)</div>
+          </div>
+        </div>
+
+        <!-- Technical / Tool Skills -->
+        <div class="side-section">
+          <div class="side-title">
+            <span class="id-text">Alat & Teknologi</span>
+            <span class="en-text">Tools & Technology</span>
+          </div>
+          <div class="skill-list">
+            <span class="skill-chip">Powerpoint</span>
+            <span class="skill-chip">Ms. Word</span>
+            <span class="skill-chip">Ms. Excel</span>
+            <span class="skill-chip">Google Docs</span>
+            <span class="skill-chip">Google Sheets</span>
+          </div>
+        </div>
+
+        <!-- Soft Skills -->
+        <div class="side-section">
+          <div class="side-title">
+            <span class="id-text">Kemampuan</span>
+            <span class="en-text">Soft Skills</span>
+          </div>
+          <div class="skill-list">
+            <span class="skill-chip id-text">Kepemimpinan</span>
+            <span class="skill-chip en-text">Leadership</span>
+            <span class="skill-chip id-text">Komunikatif</span>
+            <span class="skill-chip en-text">Communication</span>
+            <span class="skill-chip id-text">Public Speaking</span>
+            <span class="skill-chip en-text">Public Speaking</span>
+            <span class="skill-chip id-text">Manajemen Waktu</span>
+            <span class="skill-chip en-text">Time Management</span>
+            <span class="skill-chip id-text">Problem Solving</span>
+            <span class="skill-chip en-text">Problem Solving</span>
+            <span class="skill-chip id-text">Empati</span>
+            <span class="skill-chip en-text">Empathy</span>
+            <span class="skill-chip id-text">Perencanaan Acara</span>
+            <span class="skill-chip en-text">Event Planning</span>
+          </div>
+        </div>
+
+        <!-- Traits -->
+        <div class="side-section">
+          <div class="side-title">
+            <span class="id-text">Kelebihan</span>
+            <span class="en-text">Strengths</span>
+          </div>
+          <div class="trait-row">
+            <div class="trait"><div class="trait-dot"></div>
+              <span class="id-text">Terorganisir</span><span class="en-text">Organized</span>
+            </div>
+            <div class="trait"><div class="trait-dot"></div>
+              <span class="id-text">Bertanggung Jawab</span><span class="en-text">Responsible</span>
+            </div>
+            <div class="trait"><div class="trait-dot"></div>
+              <span class="id-text">Adaptif</span><span class="en-text">Adaptive</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Growth Areas -->
+        <div class="side-section">
+          <div class="side-title">
+            <span class="id-text">Area Berkembang</span>
+            <span class="en-text">Growth Areas</span>
+          </div>
+          <div class="trait-row">
+            <div class="trait" style="--trait-c: rgba(180,140,60,0.4)">
+              <div class="trait-dot" style="opacity:0.3"></div>
+              <span class="id-text">Perfeksionis</span><span class="en-text">Perfectionist</span>
+            </div>
+            <div class="trait">
+              <div class="trait-dot" style="opacity:0.3"></div>
+              <span class="id-text">Overcommit</span><span class="en-text">Overcommit</span>
+            </div>
+            <div class="trait">
+              <div class="trait-dot" style="opacity:0.3"></div>
+              <span class="id-text">Self-critical</span><span class="en-text">Self-critical</span>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="cv-footer">
+      <span class="footer-note id-block">© 2025 Muhammad Aditya Nugraha · Surabaya, Indonesia</span>
+      <span class="footer-note en-block">© 2025 Muhammad Aditya Nugraha · Surabaya, Indonesia</span>
+      <span class="footer-note">Last updated: 2025</span>
+    </footer>
+
+  </div><!-- end cv-wrapper -->
+
+</body>
+</html>
